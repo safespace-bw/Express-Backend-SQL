@@ -1,13 +1,27 @@
-require('dotenv').config();
-const accountSid = process.env.TWILIO_SID;
-const authToken = process.env.TWILIO_TEST_AUTH;
-const client = require('twilio')(accountSid, authToken);
-const sms = require('./smsHelper.js');
+require("dotenv").config();
+const express = require("express");
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_TOKEN;
 
-client.messages
-  .create({
-    body: 'This is the ship that made the Kessel Run in fourteen parsecs?',
-    from: '+15038556132',
-    to: '+12125551212'
-  })
-  .then(message => console.log(message.sid));
+const client = require("twilio")(accountSid, authToken);
+const router = express.Router();
+
+router.post(`/msg`, async (req, res) => {
+  res.header("Content-Type", "application/json");
+  try {
+    client.messages.create({
+      body: req.body.body,
+      to: req.body.to,
+      from: "+19495414981"
+    });
+    console.log("req", req.body).then(() => {
+      res.status(200);
+    });
+  } catch (err) {
+    res.status(500).json({
+      error: `Could not send message.`
+    });
+  }
+});
+
+module.exports = router;

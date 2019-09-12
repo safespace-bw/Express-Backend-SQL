@@ -1,26 +1,31 @@
-const express = require('express');
+if (process.env.DB_ENV !== "production") {
+  require("dotenv").config();
+}
 
-const cors = require('cors');
-const helmet = require('helmet');
+const express = require("express");
 
-const authRouter = require('../Auth/authRouter');
-const messagesRouter = require('../Messages/messagesRouter');
-const profilesRouter = require('../Profiles/profileRouter');
+const cors = require("cors");
+const helmet = require("helmet");
 
-const restricted = require('../middleware/restricted');
+const authRouter = require("../Auth/authRouter");
+const messagesRouter = require("../Messages/messagesRouter");
+const profilesRouter = require("../Profiles/profileRouter");
+const twilioRouter = require("../sms/sms");
+const restricted = require("../middleware/restricted");
 const server = express();
 
 server.use(helmet());
 server.use(express.json());
 server.use(cors());
 
-server.use('/api/auth', authRouter);
-server.use('/api/messages', restricted, messagesRouter);
-server.use('/api/profiles', restricted, profilesRouter);
+server.use("/api/auth", authRouter);
+server.use("/api/messages", restricted, messagesRouter);
+server.use("/api/profiles", restricted, profilesRouter);
+server.use("/api/twilio", twilioRouter);
 
 //sanity check
-server.get('/', (req, res) => {
-  res.status(200).json({ message: 'Hey dont worry you are in a safe space' });
+server.get("/", (req, res) => {
+  res.status(200).json({ message: "Hey dont worry you are in a safe space" });
 });
 
 module.exports = server;
