@@ -11,15 +11,15 @@
 
 This app allows users to login, write positive affirmations and schedule them to be sent via SMS to themselves throughout their busy days.
 
-## Tech Stack
-
 ```
-1. React
-2. Redux
-3. React-Router
-4. Axios
-5. Twilio
-
+1. Node.js
+2. Express
+3. PostgreSQL
+4. Jest
+5. BCryptJS
+6. JWT
+7. Faker
+8. Twilio
 ```
 
 ## API Endpoints
